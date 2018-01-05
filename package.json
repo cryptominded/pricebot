@@ -1,0 +1,25 @@
+{
+  "name": "pricebot",
+  "version": "1.0.0",
+  "description": "A slack based price bot for cryptocurrencies. Use commands to retrieve current prices and charts.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptominded/pricebot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cryptominded/pricebot/issues"
+  },
+  "homepage": "https://github.com/cryptominded/pricebot#readme",
+  "dependencies": {
+    "botkit": "^0.6.7",
+    "dotenv": "^4.0.0",
+    "node-fetch": "^1.7.3"
+  },
+  "devDependencies": {}
+}
