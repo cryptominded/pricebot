@@ -1,26 +1,35 @@
-require("dotenv").config();
-const Botkit = require("botkit");
-const fetch = require("node-fetch");
+import dotenv from "dotenv";
+import Botkit from "botkit";
+import fetch from "node-fetch";
+import { fetchCoins, findCoinFromSymbol } from "./utils";
+
+dotenv.config();
 
 if (!process.env.TOKEN) {
   console.log("Specify token in environment");
   process.exit(1);
 }
 
+let coins;
 const slackController = Botkit.slackbot({});
 
-var slackBot = slackController
+const slackBot = slackController
   .spawn({
     token: process.env.TOKEN
   })
   .startRTM();
 
+fetchCoins().then(res => (coins = res));
+
 // listener that handles incoming messages
 slackController.hears(
-  [".*"],
-  ["direct_message", "direct_mention"],
+  "\\?cm (.*)",
+  ["direct_message", "direct_mention", "ambient"],
   (bot, message) => {
-    fetch(`https://coinmarketcap-api.herokuapp.com/coins/${message.text}`)
+    var coinSymbol = message.match[1];
+    const coinId = findCoinFromSymbol(coinSymbol, coins);
+
+    fetch(`https://coinmarketcap-api.herokuapp.com/coins/${coinId}`)
       .then(res => res.json())
       .then(res => {
         slackController.log("Slack message received");
