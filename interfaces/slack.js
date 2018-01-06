@@ -5,8 +5,10 @@ const slackController = Botkit.slackbot({ debug: false });
 
 const createBot = token => slackController.spawn({ token }).startRTM();
 
+
+// #1 Bitcoin (BTC) - $16800.00 | €13966.24 | 1.0 BTC
 const createReply = coinData => ({
-  text: `*${coinData.symbol} - RANK #${coinData.rank} > $${coinData.price_usd} | ${coinData.price_eur}€ | ${coinData.price_btc} BTC *
+  text: `* #${coinData.rank} ${coinData.name} (${coinData.symbol}) -  $${coinData.price_usd} | ${coinData.price_eur}€ | ${coinData.price_btc} BTC *
     1h price ${coinData.percent_change_1h}%
     24h price ${coinData.percent_change_24h}%
     7d price ${coinData.percent_change_7d}%`,
@@ -28,6 +30,7 @@ const createReply = coinData => ({
 });
 
 const slackBot = (token, coinList) => {
+  console.log(coinList['BTC']);
   const bot = createBot(token);
 
   slackController.hears(
