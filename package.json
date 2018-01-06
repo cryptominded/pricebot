@@ -21,6 +21,7 @@
     "@std/esm": "^0.18.0",
     "botkit": "^0.6.7",
     "dotenv": "^4.0.0",
+    "heroku-self-ping": "^1.1.4",
     "node-fetch": "^1.7.3"
   },
   "devDependencies": {

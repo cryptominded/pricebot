@@ -4,6 +4,10 @@ import fetch from "node-fetch";
 import { getCoinList } from "./utils";
 import slackBot from "./interfaces/slack";
 import http from "http";
+import heroku from "heroku-self-ping";
+
+heroku("https://cryptominded-pricebot.herokuapp.com/");
+
 
 const server = http.createServer(function(request, response) {
   response.writeHead(200, {"Content-Type": "text/html"});
