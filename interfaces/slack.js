@@ -8,7 +8,7 @@ const createBot = token => slackController.spawn({ token }).startRTM();
 
 // #1 Bitcoin (BTC) - $16800.00 | €13966.24 | 1.0 BTC
 const createReply = coinData => ({
-  text: `* #${coinData.rank} ${coinData.name} (${coinData.symbol}) -  $${coinData.price_usd} | ${coinData.price_eur}€ | ${coinData.price_btc} BTC *
+  text: `*#${coinData.rank} ${coinData.name} (${coinData.symbol}) - $${Number(coinData.price_usd).toPrecision(2)} | ${Number(coinData.price_eur).toPrecision(2)}€ | ${coinData.price_btc} BTC *
     1h price ${coinData.percent_change_1h}%
     24h price ${coinData.percent_change_24h}%
     7d price ${coinData.percent_change_7d}%`,
