@@ -5,15 +5,27 @@ const slackController = Botkit.slackbot({ debug: false });
 
 const createBot = token => slackController.spawn({ token }).startRTM();
 
-const createReply = coinData =>
-  `*${coinData.symbol} = $${coinData.price_usd} |  ${coinData.price_btc} BTC *
-24h price -10.28% | 1h price -3%
-24h volume ${coinData.percent_change_24h}% | 1h volume ${
-    coinData.percent_change_1h
-  }%
-Learn more about ${coinData.symbol} → <https://cryptominded.com/coin/${
-    coinData.id
-  }|cryptominded.com/coin/${coinData.id}>`;
+const createReply = coinData => ({
+  text: `*${coinData.symbol} - RANK #${coinData.rank} > $${Number(coinData.price_usd).toPrecision(2)} | ${Number(coinData.price_eur).toPrecision(2)}€ | ${coinData.price_btc} BTC *
+    1h price ${coinData.percent_change_1h}%
+    24h price ${coinData.percent_change_24h}%
+    7d price ${coinData.percent_change_7d}%`,
+  attachments: [
+    {
+      fallback: `Learn more about ${
+        coinData.symbol
+      } → https://cryptominded.com/coin/${coinData.id}`,
+      actions: [
+        {
+          type: "button",
+          text: `Learn more about ${coinData.symbol} `,
+          url: `https://cryptominded.com/coin/${coinData.id}`,
+          style: "primary"
+        }
+      ]
+    }
+  ]
+});
 
 const slackBot = (token, coinList) => {
   const bot = createBot(token);
