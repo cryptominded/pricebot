@@ -11,7 +11,7 @@ const createBot = token => slackController.spawn({
 
 const reducePrecision = number => parseFloat(Number(number).toFixed(3));
 
-const summonKeyword = '\\?cmdev';
+const summonKeyword = process.env.DEV ? '\\?cmdev' : '\\?cm';
 
 // #1 Bitcoin (BTC) - $16800.00 | €13966.24 | 1.0 BTC
 const createReply = (coinData, additionalAttachments = []) => {
@@ -38,18 +38,6 @@ const createReply = (coinData, additionalAttachments = []) => {
   });
 };
 
-const createGraphTemplateAttachment = graphData => {
-  return({
-    fallback: "Required plain-text summary of the attachment.",
-    title: "GraphData",
-    image_url: "http://my-website.com/path/to/image.jpg",
-    thumb_url: "http://example.com/path/to/thumb.png",
-    footer: "Slack API",
-    footer_icon: "https://platform.slack-edge.com/img/default_application_icon.png",
-    ts: 123456789
-  });
-};
-
 const slackBot = (token, coinList) => {
   const bot = createBot(token);
 
@@ -67,24 +55,22 @@ const slackBot = (token, coinList) => {
           }`
         );
         const image = await res.buffer();
+        const fileName = `EUR/${searchedCoin} - 1 DAY`;
         request.post({
           url: 'https://slack.com/api/files.upload',
           formData: {
             token: process.env.CRYPTOBOT_SLACK_TOKEN,
-            title: "Image",
-            filename: "image.png",
-            filetype: "auto",
+            title: fileName,
+            filename: fileName,
+            filetype: 'auto',
             channels: msg.channel,
             file: {
               value: image,
               options: {
-                filename: 'myfile.bin'
+                filename: fileName
               }
             }
           },
-        }, function (err, response) {
-          console.log(err);
-          console.log(JSON.parse(response.body));
         });
       }
     }
