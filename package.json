@@ -1,0 +1,33 @@
+{
+  "name": "cryptobot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r @std/esm index.js",
+    "dev": "DEV=true nodemon -r @std/esm index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cryptominded/pricebot.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cryptominded/pricebot/issues"
+  },
+  "homepage": "https://github.com/cryptominded/pricebot#readme",
+  "dependencies": {
+    "@std/esm": "^0.18.0",
+    "botkit": "^0.6.7",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.1",
+    "mongoose": "^5.0.1",
+    "node-fetch": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.7"
+  },
+  "@std/esm": "js"
+}
