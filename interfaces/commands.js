@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import request from "request";
 import getCoinInstance from "../utils";
 import SlackSchema from "../routes/slackSchema";
-import {createPriceReply, createTopReply} from './replyFormatters';
+import {createPriceReply, createTopReply, reducePrecision} from './replyFormatters';
 
 const Coin = getCoinInstance();
 
@@ -62,9 +62,17 @@ const top = (bot, msg) => {
   bot.reply(msg, createTopReply(Coin.getTopCoins()));
 }
 
+const lamboPriceUsd = "1.900.000";
+const lamboPriceEur = "1.543.000";
+
 const price = async (bot, msg) => {
   const searchedCoin = msg.match[1].toUpperCase().trim();
-  if (!Coin.isCoinValid(searchedCoin)) {
+  if (searchedCoin === 'LAMBO') {
+    const btc = Coin.getCoinData('BTC');
+    const reply = `*#0 Centenario Lamborghini (LAMBO) - $${lamboPriceUsd} | €${lamboPriceEur} | ₿${reducePrecision(1900000 / btc.price_usd)} BTC*
+    I already have two thanks to Bitconeeeeeeeeeeect`;
+    bot.reply(msg, reply);
+  } else if (!Coin.isCoinValid(searchedCoin)) {
     bot.reply(msg, `Could not find coin *${searchedCoin}*. Type ?cm help to get a list of commands`);
   } else {
     bot.reply(msg, createPriceReply(Coin.getCoinData(searchedCoin)));

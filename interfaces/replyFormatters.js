@@ -1,4 +1,4 @@
-const reducePrecision = number => parseFloat(Number(number).toFixed(3));
+export const reducePrecision = number => parseFloat(Number(number).toFixed(3));
 
 // #1 Bitcoin (BTC) - $16800.00 | €13966.24 | 1.0 BTC
 export const createPriceReply = (coinData, additionalAttachments = [], additionalText = '') => {
