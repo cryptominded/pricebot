@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cryptominded/pricebot#readme",
   "dependencies": {
     "@std/esm": "^0.18.0",
+    "amplitude": "^3.5.0",
     "botkit": "^0.6.7",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
