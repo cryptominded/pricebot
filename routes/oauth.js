@@ -1,6 +1,7 @@
 import mongo from "mongodb";
 import fetch from "node-fetch";
 import SlackSchema from './slackSchema';
+import trackEvent from '../tracking';
 
 const slackUrl = 'https://slack.com/api/oauth.access';
 const clientId = process.env.SLACK_CLIENT_ID || '123049391908.294771441188';
@@ -28,6 +29,8 @@ export default async (req, res) => {
       res.send("App was linked successfully");
       spawnBot(SlackApp.botAccessToken);
       console.log(`Connected to: ${SlackApp.teamName} ${SlackApp.teamId}`);
+      trackEvent(json.teamId, {ec: 'app_linked', teamName: json.team_name, user: json.user_id});
+      return;
     }
     res.send("App was already linked");    
   } else {

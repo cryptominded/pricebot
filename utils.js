@@ -105,7 +105,6 @@ class Coins {
       }, {});
       self.topCoins = tempTopCoins;
 
-      console.log(weirdFormatCoins);
       console.log(new Date().toUTCString(), ' - Coin list updated');
       resolve(CoinList);
     });

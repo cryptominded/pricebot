@@ -3,6 +3,7 @@ import request from "request";
 import getCoinInstance from "../utils";
 import SlackSchema from "../routes/slackSchema";
 import {createPriceReply, createTopReply, reducePrecision} from './replyFormatters';
+import trackEvent from '../tracking';
 
 const Coin = getCoinInstance();
 
@@ -15,7 +16,6 @@ const graph = token => async (bot, msg) => {
   if (!Coin.isCoinValid(firstCoin) && secondCoin && !Coin.isCoinValid(secondCoin) && secondCoin !== '1WEEK' && secondCoin !== '1DAY') {
     bot.reply(msg, `Could not find coins *${firstCoin}*/*${secondCoin}*`);
   } else if (period && period != 'DAY' && period != 'WEEK') {
-    console.log(period)
     bot.reply(msg, `Period must be DAY or WEEK`);
   } else {
     if (!period) {
@@ -30,6 +30,7 @@ const graph = token => async (bot, msg) => {
       secondCoin = firstCoin;
       firstCoin = 'EUR';
     }
+    trackEvent(msg.team, {ec: 'graph', ea: firstCoin, user: msg.user});
     const url = `https://cryptominded-graphs.herokuapp.com/graph?fontscale=20&tsym=${firstCoin.toLowerCase()}&fsym=${secondCoin.toLowerCase()}&period=${period.toLowerCase()}`
     const res = await fetch(url);
     const fileName = `${firstCoin}/${secondCoin} - ${period}`;
@@ -75,6 +76,7 @@ const price = async (bot, msg) => {
   } else if (!Coin.isCoinValid(searchedCoin)) {
     bot.reply(msg, `Could not find coin *${searchedCoin}*. Type ?cm help to get a list of commands`);
   } else {
+    trackEvent(msg.team, {ec: 'price', ea: searchedCoin, user: msg.user});    
     bot.reply(msg, createPriceReply(Coin.getCoinData(searchedCoin)));
   }
 }
@@ -90,6 +92,7 @@ const alert = teamId => async (bot, msg) => {
       }
       const slack = await SlackSchema.findOne({teamId});
       if (slack.alertChannels.indexOf(msg.channel) > -1) {
+        trackEvent(msg.team, {ec: 'alert', user: msg.user});
         slack.alertChannels = slack.alertChannels.filter((channel) => msg.channel !== channel);
         bot.reply(msg, 'This channel will no longer receive pump and dump alerts');
       } else {

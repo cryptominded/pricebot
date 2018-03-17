@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
+console.log(process.env.NEWRELIC);
+import 'newrelic';
 import createCoinInstance from "./utils";
 import slackBot from "./interfaces/slack";
 import express from "express";
@@ -7,6 +9,7 @@ import oauth from "./routes/oauth";
 import mongoose from 'mongoose';
 import SlackSchema from './routes/slackSchema';
 import path from "path";
+
 const server = express();
 const __dirname = path.resolve();
 

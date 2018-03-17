@@ -24,7 +24,9 @@
     "express": "^4.16.2",
     "mongodb": "^3.0.1",
     "mongoose": "^5.0.1",
-    "node-fetch": "^1.7.3"
+    "newrelic": "^3.2.0",
+    "node-fetch": "^1.7.3",
+    "universal-analytics": "^0.4.16"
   },
   "devDependencies": {
     "nodemon": "^1.14.7"
