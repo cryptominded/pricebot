@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-console.log(process.env.NEWRELIC);
 import 'newrelic';
 import createCoinInstance from "./utils";
 import slackBot from "./interfaces/slack";
