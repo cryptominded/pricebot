@@ -7,6 +7,7 @@ import express from "express";
 import oauth from "./routes/oauth";
 import mongoose from 'mongoose';
 import SlackSchema from './routes/slackSchema';
+import FeedbackSchema from './routes/feedbackSchema';
 import path from "path";
 
 const server = express();

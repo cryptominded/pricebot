@@ -2,6 +2,7 @@ import fetch from "node-fetch";
 import request from "request";
 import getCoinInstance from "../utils";
 import SlackSchema from "../routes/slackSchema";
+import FeedbackSchema from "../routes/feedbackSchema";
 import {createPriceReply, createTopReply, reducePrecision} from './replyFormatters';
 import trackEvent from '../tracking';
 
@@ -110,7 +111,25 @@ const help = (bot, msg) => {
     \`?cm TICKER|NAME\` to get a live ticker. Ex: \`?cm btc\` or \`?cm bitcoin\`
     \`?cm graph TICKER\` to get a realtime graph for a TICKER. Ex: \`?cm graph eth btc week|day\`
     \`?cm top\` to get the top5 cryptocurrencies.
+    \`?cm feedback\` to give some feedback about the bot.
+    \`?cm help\` to display this message :).
   `);
+}
+
+const feedback = teamId => async (bot, msg) => {
+  trackEvent(msg.team, {ec: 'feedback', user: msg.user});
+  console.log(msg.match);
+  if (msg.match[1].length === 0) {
+    bot.reply(msg, `You forgot your feedback ! Syntax is ?cm feedback your feedback here`);
+  } else {
+    bot.reply(msg, `Thank you for your feedback! Feel free to leave your email so I can reach out to you!`);
+    const feedback = new FeedbackSchema({
+      message: msg.match[1],
+      userId: msg.user,
+      teamId
+    });
+    await feedback.save();
+  }
 }
 
 export default (token, teamId) => {
@@ -130,6 +149,10 @@ export default (token, teamId) => {
     }, {
       func: help,
       keyword: " help(.*)",
+      conditions: ["direct_message", "ambient"]
+    }, {
+      func: feedback(teamId),
+      keyword: " feedback(.*)",
       conditions: ["direct_message", "ambient"]
     }, {
       // Price needs to be last
