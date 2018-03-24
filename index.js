@@ -28,11 +28,16 @@ const init = async () => {
   });
 };
 
-server.use(express.static('views'))
+server.use(express.static('views'));
+
 server.get('/', (req, res) => {
   res.sendFile(path.join(__dirname+'/views/'));
 });
 
 server.get('/oauth', oauth);
+
+server.get('/callback', (req, res) => {
+  res.redirect('https://slack.com/oauth/authorize?client_id=123049391908.294771441188&scope=bot,commands');
+});
 
 init();
